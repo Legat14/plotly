@@ -8,12 +8,14 @@ const Plot = dynamic(() => import("react-plotly.js"), {
   ssr: false,
 });
 
-export function StackedBars({ red, yellow, green }) {
-  const N = red.length;
-
+export function StackedBars({ data }) {
+  const N = data.length;
   const x = useMemo(() => Array.from({ length: N }, (_, i) => i), [N]);
+  const red = useMemo(() => data.map((item) => item.red), [data]);
+  const yellow = useMemo(() => data.map((item) => item.yellow), [data]);
+  const green = useMemo(() => data.map((item) => item.green), [data]);
 
-  const data = useMemo(
+  const convertedData = useMemo(
     () => [
       {
         type: "bar",
@@ -57,7 +59,7 @@ export function StackedBars({ red, yellow, green }) {
 
   return (
     <Plot
-      data={data}
+      data={convertedData}
       layout={layout}
       config={{
         displayModeBar: false,
